@@ -16,16 +16,16 @@ let bg = null;
 let bgIndex = 0;
 let bgEnabled = true;
 let ducked = 0;
+const listeners = new Set();
+const emit = () => listeners.forEach((fn) => fn());
 
 function ensureBg() {
   if (bg || !TRACKS.length) return bg;
   bg = new Audio(url(TRACKS[bgIndex].file));
   bg.volume = 0.22;
-  bg.addEventListener('ended', () => {
-    bgIndex = (bgIndex + 1) % TRACKS.length;
-    bg.src = url(TRACKS[bgIndex].file);
-    bg.play().catch(() => {});
-  });
+  bg.addEventListener('ended', () => bgMusic.next());
+  bg.addEventListener('play', emit);
+  bg.addEventListener('pause', emit);
   return bg;
 }
 
@@ -50,6 +50,28 @@ export const bgMusic = {
     if (!ducked) this.play();
   },
   current: () => (TRACKS.length ? TRACKS[bgIndex] : null),
+  isPlaying: () => !!bg && !bg.paused,
+  toggle() {
+    const a = ensureBg();
+    if (!a) return;
+    if (a.paused) {
+      ducked = 0;
+      a.play().catch(() => {});
+    } else a.pause();
+  },
+  next() {
+    if (!TRACKS.length) return;
+    bgIndex = (bgIndex + 1) % TRACKS.length;
+    const a = ensureBg();
+    const wasPlaying = !a.paused || a.ended;
+    a.src = url(TRACKS[bgIndex].file);
+    if (wasPlaying && bgEnabled && !ducked) a.play().catch(() => {});
+    emit();
+  },
+  subscribe(fn) {
+    listeners.add(fn);
+    return () => listeners.delete(fn);
+  },
 };
 
 // ---- entry song from an in-app track ----

@@ -25,3 +25,10 @@
 - Entry music player outside the page: cassette with "now playing", YouTube/Spotify link or an app track, plays when the entry opens
 - Background music system (waiting for tracks in public/music/)
 - No focus ring on text fields
+
+## v0.3 (20 Nov 2026)
+**Why:** the desktop home felt plain; the first collage mockup (A) was too busy, so the calmer version (B) was picked.
+
+- New home: greeting with a highlighter, today's page card with washi tape, "This week" mood stickers (tap a day to open it, + for today), a memory resurfacing (on this day, or a page from over a week ago, with a line from it)
+- Desktop: 2 columns, straighter cards, two stickers
+- Background music player: in the side rail on desktop, a strip above the nav on phones; hidden until tracks are added

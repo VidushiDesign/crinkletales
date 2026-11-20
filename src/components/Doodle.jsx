@@ -93,7 +93,7 @@ export default function Doodle({ kind = 'star', skin = 'pop', className }) {
 }
 
 // Tiny faces for the mood chip.
-export function MoodFace({ mood = 'meh', skin = 'pop' }) {
+export function MoodFace({ mood = 'meh', skin = 'pop', fill }) {
   const stroke = skin === 'japandi' ? '#B5452F' : '#1B1A17';
   const mouths = {
     happy: 'M34 60c8 10 24 10 32 0',
@@ -110,7 +110,7 @@ export function MoodFace({ mood = 'meh', skin = 'pop' }) {
   const eyes = mood === 'tired' || mood === 'calm' ? 'M32 42c3 3 7 3 10 0M58 42c3 3 7 3 10 0' : null;
   return (
     <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%' }} aria-hidden="true">
-      <circle cx="50" cy="50" r="40" fill={skin === 'japandi' ? 'none' : '#F5C431'} stroke={stroke} strokeWidth="5" />
+      <circle cx="50" cy="50" r="40" fill={skin === 'japandi' ? 'none' : fill || '#F5C431'} stroke={stroke} strokeWidth="5" />
       {eyes ? (
         <path d={eyes} fill="none" stroke={stroke} strokeWidth="5" strokeLinecap="round" />
       ) : (

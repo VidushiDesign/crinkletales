@@ -3,6 +3,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Nav, Toast } from './components/ui.jsx';
+import NowPlaying from './components/NowPlaying.jsx';
+import { TRACKS } from './lib/music.js';
 import { load, save, wipe } from './lib/storage.js';
 import { setSoundEnabled, sound } from './lib/sound.js';
 import { generateEntry, makeNoteEntry, pagesForNote, PROMPTS } from './lib/generate.js';
@@ -182,11 +184,13 @@ export default function App() {
   if (!screen) screen = <Home data={data} go={go} />;
 
   const showNav = WITH_NAV.includes(route.name);
+  const showPlayer = showNav && TRACKS.length > 0 && data.settings.music !== false;
   const navCurrent = route.name === 'entry' ? 'journal' : route.name;
 
   return (
-    <div className={`app route-${route.name} ${showNav ? 'has-nav' : ''}`}>
+    <div className={`app route-${route.name} ${showNav ? 'has-nav' : ''} ${showPlayer ? 'has-player' : ''}`}>
       {showNav ? <Nav current={navCurrent} go={go} /> : null}
+      {showPlayer ? <NowPlaying enabled /> : null}
       <main className="main">{screen}</main>
       <Toast toast={toast} />
     </div>
