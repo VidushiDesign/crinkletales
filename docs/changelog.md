@@ -15,3 +15,13 @@
 - Responsive: bottom nav on phones, left rail on desktop
 
 **Not yet:** AI page making, more styles, music, search, mood calendar, ask your journal, year wrap-up, cloud sync.
+
+## v0.2 (20 Nov 2026)
+**Why:** feedback after the first click-through: pages felt silent, rough days need an out, music belongs to memories.
+
+- Every item has its own pick-up and drop sound (tape peel, ticket flick, polaroid slide, sticker pop, note rustle, name tag slap, tag flutter, stamp thunk, marker squeak); rotating ticks, resizing stretches
+- Page-making plays an ASMR sequence: rustle, snip, tape, stickers, stamp, glue
+- "Skip the page, just keep my words" for rough days; can be turned into a page later
+- Entry music player outside the page: cassette with "now playing", YouTube/Spotify link or an app track, plays when the entry opens
+- Background music system (waiting for tracks in public/music/)
+- No focus ring on text fields

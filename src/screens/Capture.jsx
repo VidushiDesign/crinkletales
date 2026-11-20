@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, Mic, PenLine, Square, Shuffle, Trash2, Wand2 } from 'lucide-react';
+import { ArrowLeft, Mic, PenLine, Square, Shuffle, Trash2, Wand2, NotebookPen } from 'lucide-react';
 import { Press, Chip } from '../components/ui.jsx';
 import { detect, chipsFor, PROMPTS } from '../lib/generate.js';
 import { speechSupported, startListening } from '../lib/speech.js';
@@ -75,11 +75,11 @@ export default function Capture({ params = {}, back, onMake }) {
     setInterim('');
   };
 
-  const make = () => {
+  const make = (skip = false) => {
     if (rec) stopRec();
     const full = (text + ' ' + interim).trim();
-    track('entry_made', { mode, words: full.split(/\s+/).length });
-    onMake(full, mode);
+    track(skip ? 'page_skipped' : 'entry_made', { mode, words: full.split(/\s+/).length });
+    onMake(full, mode, skip);
   };
 
   const mm = String(Math.floor(secs / 60)).padStart(2, '0');
@@ -208,8 +208,11 @@ export default function Capture({ params = {}, back, onMake }) {
       </div>
 
       <div className="capture-foot">
-        <Press variant="primary" size="lg" sfx="paper" disabled={!ready} onClick={make}>
+        <Press variant="primary" size="lg" sfx="paper" disabled={!ready} onClick={() => make(false)}>
           <Wand2 aria-hidden="true" /> Make my page
+        </Press>
+        <Press variant="ghost" sfx="rustle" disabled={!ready} onClick={() => make(true)}>
+          <NotebookPen aria-hidden="true" /> Skip the page, just keep my words
         </Press>
         {!ready ? <p className="muted small">Write a few words to start.</p> : null}
       </div>

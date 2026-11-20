@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Lock, MessageSquare, Trash2, Volume2, VolumeX, PlayCircle } from 'lucide-react';
+import { Lock, MessageSquare, Trash2, Volume2, VolumeX, PlayCircle, Music } from 'lucide-react';
+import { TRACKS } from '../lib/music.js';
 import { Press, Confirm } from '../components/ui.jsx';
 import { track } from '../lib/track.js';
 
@@ -40,6 +41,14 @@ export default function You({ data, setSettings, onWipe, replayIntro }) {
             <small>paper, tape and sticker sounds</small>
           </span>
           <span className={`switch ${settings.sound ? 'is-on' : ''}`} aria-hidden="true" />
+        </button>
+        <button type="button" className="row" onClick={() => setSettings({ music: !settings.music })} aria-pressed={settings.music}>
+          <Music aria-hidden="true" />
+          <span>
+            <strong>Background music</strong>
+            <small>{TRACKS.length ? 'soft lo-fi while you journal' : 'tracks arriving soon'}</small>
+          </span>
+          <span className={`switch ${settings.music ? 'is-on' : ''}`} aria-hidden="true" />
         </button>
         <button type="button" className="row" onClick={replayIntro}>
           <PlayCircle aria-hidden="true" />

@@ -113,6 +113,16 @@ function ItemBody({ it, skin, onPhoto }) {
   }
 }
 
+// Skipped-page entries: just the words on lined paper.
+export function NoteThumb({ entry, full = false }) {
+  return (
+    <div className={`note-thumb ${full ? 'is-full' : ''}`}>
+      <p>{full ? entry.text : entry.text.slice(0, 160)}</p>
+      <span className="note-thumb-tag">no page</span>
+    </div>
+  );
+}
+
 export default function Page({
   page,
   skin = 'pop',

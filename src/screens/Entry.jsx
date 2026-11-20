@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { ArrowLeft, Pencil, Trash2, Mail } from 'lucide-react';
+import { ArrowLeft, Pencil, Trash2, Mail, Wand2 } from 'lucide-react';
 import { Press, Confirm } from '../components/ui.jsx';
-import Page from '../components/Page.jsx';
+import Page, { NoteThumb } from '../components/Page.jsx';
+import MusicCassette from '../components/MusicCassette.jsx';
 import { dateLabel, MOOD_LABEL } from '../lib/generate.js';
 import { sound } from '../lib/sound.js';
 import { track } from '../lib/track.js';
 
-export default function Entry({ entry, back, go, onDelete }) {
+export default function Entry({ entry, back, go, onDelete, onUpdate, onMakePages }) {
   const [pocket, setPocket] = useState(false);
   const [confirm, setConfirm] = useState(false);
 
@@ -46,23 +47,39 @@ export default function Entry({ entry, back, go, onDelete }) {
         <span className="pill pill-butter">{entry.style}</span>
       </div>
 
-      <div className="spread" onScroll={() => {}}>
-        {entry.pages.map((p, i) => (
-          <div className="spread-page" key={p.id}>
-            <Page page={p} skin={entry.style} />
-            <span className="spread-num">
-              {i + 1} / {entry.pages.length}
-            </span>
-          </div>
-        ))}
-      </div>
+      <MusicCassette music={entry.music || null} onChange={(music) => onUpdate({ ...entry, music })} />
+
+      {entry.pages.length ? (
+        <div className="spread">
+          {entry.pages.map((p, i) => (
+            <div className="spread-page" key={p.id}>
+              <Page page={p} skin={entry.style} />
+              <span className="spread-num">
+                {i + 1} / {entry.pages.length}
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="note-view">
+          <NoteThumb entry={entry} full />
+          <p className="muted small center">No page for this one. Just your words.</p>
+        </div>
+      )}
 
       <div className="entry-actions">
-        <Press variant="primary" size="lg" sfx="paper" onClick={() => go('editor', { id: entry.id })}>
-          <Pencil aria-hidden="true" /> Edit pages
-        </Press>
+        {entry.pages.length ? (
+          <Press variant="primary" size="lg" sfx="paper" onClick={() => go('editor', { id: entry.id })}>
+            <Pencil aria-hidden="true" /> Edit pages
+          </Press>
+        ) : (
+          <Press size="lg" sfx="paper" onClick={() => onMakePages(entry)}>
+            <Wand2 aria-hidden="true" /> Make a page from this
+          </Press>
+        )}
       </div>
 
+      {entry.pages.length ? (
       <section className={`pocket ${pocket ? 'is-open' : ''}`}>
         <div className="pocket-card" id="pocket-story" aria-hidden={!pocket}>
           <p className="eyebrow">the full story</p>
@@ -101,6 +118,7 @@ export default function Entry({ entry, back, go, onDelete }) {
           {pocket ? 'tuck it back in' : 'pull out the full story'}
         </button>
       </section>
+      ) : null}
 
       <Confirm
         open={confirm}

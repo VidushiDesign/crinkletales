@@ -2,22 +2,33 @@ import { useEffect, useState } from 'react';
 import Doodle from '../components/Doodle.jsx';
 import { sound } from '../lib/sound.js';
 
-const STEPS = ['reading your day', 'cutting tape', 'finding stickers', 'gluing it down'];
+// Each step has its own ASMR sound, over a bed of soft paper rustles.
+const STEPS = [
+  ['reading your day', 'rustle'],
+  ['snipping paper', 'snip'],
+  ['tearing tape', 'tape'],
+  ['finding stickers', 'pop'],
+  ['stamping the date', 'thunk'],
+  ['gluing it down', 'paper'],
+];
 
 export default function Generating({ onDone }) {
   const [step, setStep] = useState(0);
   useEffect(() => {
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    const per = reduce ? 250 : 520;
-    const timers = STEPS.map((_, i) =>
+    const per = reduce ? 220 : 560;
+    const timers = STEPS.map(([, sfx], i) =>
       setTimeout(() => {
         setStep(i);
-        i === 1 ? sound.tape() : i === 2 ? sound.sticker() : sound.paper();
+        sound[sfx]();
+        if (sfx === 'pop') setTimeout(() => sound.pop(), 160);
       }, i * per),
     );
-    const done = setTimeout(onDone, STEPS.length * per + 200);
+    const bed = setInterval(() => Math.random() < 0.6 && sound.rustle(), 230);
+    const done = setTimeout(onDone, STEPS.length * per + 250);
     return () => {
       timers.forEach(clearTimeout);
+      clearInterval(bed);
       clearTimeout(done);
     };
   }, [onDone]);
@@ -36,8 +47,9 @@ export default function Generating({ onDone }) {
         <div className="gen-sticker s3">
           <Doodle kind="flower" />
         </div>
+        <div className="gen-stamp">{new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</div>
       </div>
-      <p className="gen-step">{STEPS[step]}…</p>
+      <p className="gen-step">{STEPS[step][0]}…</p>
     </div>
   );
 }

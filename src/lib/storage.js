@@ -7,7 +7,7 @@ let memory = null;
 
 const empty = () => ({
   entries: [],
-  settings: { name: '', sound: true, introSeen: false },
+  settings: { name: '', sound: true, music: true, introSeen: false },
 });
 
 export function load() {

@@ -39,7 +39,7 @@ export const MOODS = {
   loved: ['loved', 'love', 'hug', 'cared', 'special'],
   tired: ['tired', 'exhausted', 'sleepy', 'drained', 'long day', 'burnt out'],
   anxious: ['anxious', 'nervous', 'worried', 'stressed', 'overwhelmed', 'panic', 'scared'],
-  sad: ['sad', 'cried', 'lonely', 'upset', 'hurt', 'miss', 'missed', 'heavy', 'low', 'down'],
+  sad: ['sad', 'cried', 'lonely', 'upset', 'hurt', 'miss', 'missed', 'heavy', 'low', 'down', 'rough', 'bad day', 'awful'],
 };
 
 export const MOOD_LABEL = {
@@ -218,6 +218,35 @@ const PAPER = {
   travel: { texture: 'dots', tone: 1 },
   feelings: { texture: 'lined', tone: 2 },
 };
+
+// For rough days: keep only the words, no page.
+export function makeNoteEntry(text, { mode = 'type', style = 'pop' } = {}) {
+  const d = detect(text);
+  const now = Date.now();
+  return {
+    id: uid(),
+    kind: 'note',
+    createdAt: now,
+    updatedAt: now,
+    mode,
+    style,
+    text: d.text,
+    title: makeTitle(d),
+    theme: d.theme,
+    mood: d.mood,
+    people: d.people.map((p) => p.name),
+    places: d.places,
+    song: d.song,
+    words: d.words,
+    pages: [],
+  };
+}
+
+// Turns a skipped-page note into a full entry later, keeping its id and date.
+export function pagesForNote(note) {
+  const fresh = generateEntry(note.text, { mode: note.mode, style: note.style });
+  return { ...note, kind: 'page', pages: fresh.pages, title: fresh.title, updatedAt: Date.now() };
+}
 
 export function generateEntry(text, { mode = 'type', style = 'pop' } = {}) {
   const d = detect(text);

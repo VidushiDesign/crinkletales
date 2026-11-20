@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Mic, PenLine, Shuffle, Flame } from 'lucide-react';
 import { Press } from '../components/ui.jsx';
-import Page from '../components/Page.jsx';
+import Page, { NoteThumb } from '../components/Page.jsx';
 import { PROMPTS, dateLabel } from '../lib/generate.js';
 import { streakDays } from './Insights.jsx';
 
@@ -75,7 +75,7 @@ export default function Home({ data, go }) {
                 style={{ '--tilt': `${i % 2 ? 2 : -2}deg` }}
                 onClick={() => go('entry', { id: e.id })}
               >
-                <Page page={e.pages[0]} skin={e.style} />
+                {e.pages.length ? <Page page={e.pages[0]} skin={e.style} /> : <NoteThumb entry={e} />}
                 <span className="shelf-cap">{e.title}</span>
               </button>
             ))}

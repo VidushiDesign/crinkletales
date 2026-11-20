@@ -9,7 +9,7 @@ import {
 import Page, { PAPER_TONES, PAPER_TEXTURES } from '../components/Page.jsx';
 import Doodle, { DOODLE_KINDS } from '../components/Doodle.jsx';
 import { Press, Sheet, Chip } from '../components/ui.jsx';
-import { sound } from '../lib/sound.js';
+import { sound, itemSound } from '../lib/sound.js';
 import { uid } from '../lib/storage.js';
 import { dateLabel } from '../lib/generate.js';
 import { fileToSmallDataUrl } from '../lib/image.js';
@@ -130,6 +130,11 @@ export default function Editor({ entry: initial, onSave, onDone, soundOn, setSou
         let rot = d.orig.rot + (a - d.a0);
         rot = ((rot + 540) % 360) - 180;
         if (Math.abs(rot) < 3) rot = 0;
+        const notch = Math.round(rot / 10);
+        if (notch !== d.notch) {
+          d.notch = notch;
+          sound.tick();
+        }
         patch = { rot: Math.round(rot) };
       } else {
         const dist = Math.hypot(ev.clientX - d.cx, ev.clientY - d.cy);
@@ -143,7 +148,9 @@ export default function Editor({ entry: initial, onSave, onDone, soundOn, setSou
       drag.current = null;
       if (d && d.moved) {
         commit(entryRef.current, d.before);
-        if (d.mode === 'move') sound.paper();
+        if (d.mode === 'move') itemSound.drop(d.type);
+        else if (d.mode === 'scale') sound.stretch();
+        else sound.tick();
         track('editor_' + d.mode);
       }
     };
@@ -167,6 +174,8 @@ export default function Editor({ entry: initial, onSave, onDone, soundOn, setSou
     drag.current = {
       mode,
       id: it.id,
+      type: it.type,
+      notch: Math.round((it.rot || 0) / 10),
       sx: ev.clientX,
       sy: ev.clientY,
       rect,
@@ -189,7 +198,7 @@ export default function Editor({ entry: initial, onSave, onDone, soundOn, setSou
       return;
     }
     lastTap.current = { id: it.id, t: now };
-    if (sel !== it.id) sound.tap();
+    itemSound.pick(it.type);
     setSel(it.id);
     setHint(false);
     startDrag(ev, it, 'move');
@@ -211,6 +220,7 @@ export default function Editor({ entry: initial, onSave, onDone, soundOn, setSou
     commit(mapItems(entry, (items) => [...items, it]));
     setSel(it.id);
     setSheet(null);
+    itemSound.add(type);
     track('editor_add', { type });
     return it;
   };
@@ -262,7 +272,7 @@ export default function Editor({ entry: initial, onSave, onDone, soundOn, setSou
       const target = page.items.find((i) => i.id === photoTarget.current);
       if (target) commit(patchItem(entry, target.id, { props: { ...target.props, src } }));
       else addItem('photo', { src }, 44);
-      sound.tape();
+      sound.slide();
       track('editor_photo');
     } catch {
       /* unreadable image: ignore */
@@ -477,7 +487,6 @@ export default function Editor({ entry: initial, onSave, onDone, soundOn, setSou
               type="button"
               className="tray-item"
               aria-label={`${k} sticker`}
-              onPointerDown={() => sound.sticker()}
               onClick={() => addItem('doodle', { kind: k }, 16)}
             >
               <Doodle kind={k} skin={skin} />
@@ -506,7 +515,6 @@ export default function Editor({ entry: initial, onSave, onDone, soundOn, setSou
                 type="button"
                 className="tape-swatch"
                 aria-label={`${pattern} tape ${color + 1}`}
-                onPointerDown={() => sound.tape()}
                 onClick={() => addItem('tape', { pattern, color }, 30)}
               >
                 <Page

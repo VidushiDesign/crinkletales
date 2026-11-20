@@ -5,7 +5,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Nav, Toast } from './components/ui.jsx';
 import { load, save, wipe } from './lib/storage.js';
 import { setSoundEnabled, sound } from './lib/sound.js';
-import { generateEntry, PROMPTS } from './lib/generate.js';
+import { generateEntry, makeNoteEntry, pagesForNote, PROMPTS } from './lib/generate.js';
+import { bgMusic } from './lib/music.js';
 import { track } from './lib/track.js';
 import Intro from './screens/Intro.jsx';
 import Home from './screens/Home.jsx';
@@ -28,6 +29,13 @@ export default function App() {
   const route = stack[stack.length - 1];
 
   useEffect(() => setSoundEnabled(data.settings.sound), [data.settings.sound]);
+  useEffect(() => bgMusic.setEnabled(data.settings.music !== false), [data.settings.music]);
+  // background music can only start after the first tap
+  useEffect(() => {
+    const start = () => bgMusic.play();
+    window.addEventListener('pointerdown', start, { once: true });
+    return () => window.removeEventListener('pointerdown', start);
+  }, []);
   useEffect(() => {
     window.scrollTo(0, 0);
     track('screen_' + route.name);
@@ -65,7 +73,15 @@ export default function App() {
   );
   const lastStyle = data.entries[0]?.style || 'pop';
 
-  const onMake = (text, mode) => {
+  const onMake = (text, mode, skip) => {
+    if (skip) {
+      const note = makeNoteEntry(text, { mode, style: lastStyle });
+      update((d) => ({ ...d, entries: [note, ...d.entries] }));
+      track('entry_created', { theme: note.theme, pages: 0, mode });
+      replace('entry', { id: note.id });
+      notify('Kept as words. No page today.');
+      return;
+    }
     pending.current = { text, mode };
     replace('generating');
   };
@@ -124,6 +140,12 @@ export default function App() {
           entry={find(route.params.id)}
           back={back}
           go={go}
+          onUpdate={saveEntry}
+          onMakePages={(e) => {
+            saveEntry(pagesForNote(e));
+            track('note_to_page');
+            replace('editor', { id: e.id });
+          }}
           onDelete={(id) => {
             update((d) => ({ ...d, entries: d.entries.filter((e) => e.id !== id) }));
             track('entry_deleted');

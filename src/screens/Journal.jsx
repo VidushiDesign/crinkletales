@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Press, Chip, Empty } from '../components/ui.jsx';
-import Page from '../components/Page.jsx';
+import Page, { NoteThumb } from '../components/Page.jsx';
 import { dateLabel } from '../lib/generate.js';
 import { sound } from '../lib/sound.js';
 
@@ -68,7 +68,7 @@ export default function Journal({ data, go }) {
               onClick={() => go('entry', { id: e.id })}
             >
               <div className="entry-thumb">
-                <Page page={e.pages[0]} skin={e.style} />
+                {e.pages.length ? <Page page={e.pages[0]} skin={e.style} /> : <NoteThumb entry={e} />}
                 {e.pages.length > 1 ? <span className="entry-pages">{e.pages.length} pages</span> : null}
               </div>
               <div className="entry-meta">
