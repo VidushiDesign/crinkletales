@@ -46,7 +46,7 @@ export default function You({ data, setSettings, onWipe, replayIntro }) {
           <Music aria-hidden="true" />
           <span>
             <strong>Background music</strong>
-            <small>{TRACKS.length ? 'soft lo-fi while you journal' : 'tracks arriving soon'}</small>
+            <small>{TRACKS.length ? 'calm piano while you journal' : 'tracks arriving soon'}</small>
           </span>
           <span className={`switch ${settings.music ? 'is-on' : ''}`} aria-hidden="true" />
         </button>

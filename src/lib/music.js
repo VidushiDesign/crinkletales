@@ -1,15 +1,28 @@
 // MUSIC
 // 1. Background music: loops quietly after the first tap (browsers
-//    block sound before that). Muted from the You screen.
+//    block sound before that). Pauses while you record, and while an
+//    entry's own song plays. Muted from the You screen.
 // 2. Entry music: each memory can have a song that plays when opened.
 //
-// Tracks live in public/music/. Add a file there, then list it here.
+// Tracks are either composed in code (gen, see compose.js) or files in
+// public/music/ (file: 'music/name.mp3'). Add a file there, then list it here.
+import { GenPlayer } from './compose.js';
+
 export const TRACKS = [
-  // { id: 'cozy', title: 'cozy afternoon', file: 'music/cozy.mp3', mood: 'calm' },
+  { id: 'calm', title: 'slow morning · soft piano', gen: 'calm' },
+  { id: 'dreamy', title: 'cloud nap · dreamy', gen: 'dreamy' },
+  { id: 'sunny', title: 'window seat · sunny', gen: 'sunny' },
 ];
 
 const url = (file) => `${import.meta.env.BASE_URL}${file}`;
 export const trackById = (id) => TRACKS.find((t) => t.id === id);
+
+function makePlayer(t, volume) {
+  if (t.gen) return new GenPlayer(t.gen, volume);
+  const a = new Audio(url(t.file));
+  a.volume = volume;
+  return a;
+}
 
 // ---- background player ----
 let bg = null;
@@ -21,8 +34,7 @@ const emit = () => listeners.forEach((fn) => fn());
 
 function ensureBg() {
   if (bg || !TRACKS.length) return bg;
-  bg = new Audio(url(TRACKS[bgIndex].file));
-  bg.volume = 0.22;
+  bg = makePlayer(TRACKS[bgIndex], 0.2);
   bg.addEventListener('ended', () => bgMusic.next());
   bg.addEventListener('play', emit);
   bg.addEventListener('pause', emit);
@@ -34,13 +46,14 @@ export const bgMusic = {
     bgEnabled = on;
     if (!on) bg?.pause();
     else if (!ducked) this.play();
+    emit();
   },
   play() {
     if (!bgEnabled || ducked) return;
     const a = ensureBg();
     a?.play().catch(() => {});
   },
-  // an entry's own song is playing: step aside
+  // something else needs the room (recording, an entry's song): step aside
   duck() {
     ducked++;
     bg?.pause();
@@ -61,10 +74,11 @@ export const bgMusic = {
   },
   next() {
     if (!TRACKS.length) return;
+    const wasPlaying = bg && !bg.paused;
+    bg?.pause();
+    bg = null;
     bgIndex = (bgIndex + 1) % TRACKS.length;
     const a = ensureBg();
-    const wasPlaying = !a.paused || a.ended;
-    a.src = url(TRACKS[bgIndex].file);
     if (wasPlaying && bgEnabled && !ducked) a.play().catch(() => {});
     emit();
   },
@@ -78,9 +92,8 @@ export const bgMusic = {
 export function playTrack(id) {
   const t = trackById(id);
   if (!t) return null;
-  const a = new Audio(url(t.file));
-  a.loop = true;
-  a.volume = 0.5;
+  const a = makePlayer(t, 0.4);
+  if (!t.gen) a.loop = true;
   a.play().catch(() => {});
   return a;
 }

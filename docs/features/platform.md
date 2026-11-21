@@ -11,3 +11,6 @@ The browser's own speech-to-text. Works in Chrome, Edge and Safari; Firefox fall
 
 ## Analytics (`src/lib/track.js`)
 `track(name, props)` sends to GoatCounter once its script is in `index.html`. Events: screen views, intro completed or skipped, entry made (mode, words), entry created (theme, pages), editor actions, style switched, pocket opened, insights viewed, mic errors, feedback clicked. Never the text.
+
+## Music (`src/lib/music.js`, `src/lib/compose.js`)
+Background music starts after the first tap. Tracks are either composed live in code (`gen`, see `PIECES` in compose.js) or MP3 files in `public/music/`. The background player ducks while recording and while an entry's song plays. Entry songs can be an app track or a YouTube/Spotify link (embeds only play on the live site, not in the claude.ai preview).

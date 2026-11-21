@@ -184,7 +184,7 @@ export default function App() {
   if (!screen) screen = <Home data={data} go={go} />;
 
   const showNav = WITH_NAV.includes(route.name);
-  const showPlayer = showNav && TRACKS.length > 0 && data.settings.music !== false;
+  const showPlayer = showNav && route.name !== 'entry' && TRACKS.length > 0 && data.settings.music !== false;
   const navCurrent = route.name === 'entry' ? 'journal' : route.name;
 
   return (

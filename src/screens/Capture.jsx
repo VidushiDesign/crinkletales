@@ -5,6 +5,7 @@ import { detect, chipsFor, PROMPTS } from '../lib/generate.js';
 import { speechSupported, startListening } from '../lib/speech.js';
 import { sound } from '../lib/sound.js';
 import { track } from '../lib/track.js';
+import { bgMusic } from '../lib/music.js';
 
 const MIC_MESSAGES = {
   unsupported: 'Talk mode needs Chrome, Edge or Safari. You can type instead.',
@@ -24,6 +25,7 @@ export default function Capture({ params = {}, back, onMake }) {
   const [micError, setMicError] = useState(params.mode === 'talk' && !speechSupported() ? 'unsupported' : null);
   const [prompt, setPrompt] = useState(params.prompt || PROMPTS[0]);
   const stopRef = useRef(null);
+  const duckedRef = useRef(false);
   const baseRef = useRef('');
   const taRef = useRef(null);
 
@@ -38,7 +40,19 @@ export default function Capture({ params = {}, back, onMake }) {
     return () => clearInterval(t);
   }, [rec]);
 
-  useEffect(() => () => stopRef.current?.(), []);
+  const release = () => {
+    if (duckedRef.current) {
+      duckedRef.current = false;
+      bgMusic.unduck();
+    }
+  };
+  useEffect(() => () => {
+    stopRef.current?.();
+    release();
+  }, []);
+  useEffect(() => {
+    if (!rec) release();
+  }, [rec]);
   useEffect(() => {
     if (mode === 'type') setTimeout(() => taRef.current?.focus(), 50);
   }, [mode]);
@@ -49,6 +63,10 @@ export default function Capture({ params = {}, back, onMake }) {
     setSecs(0);
     setRec(true);
     sound.tap();
+    if (!duckedRef.current) {
+      bgMusic.duck();
+      duckedRef.current = true;
+    }
     stopRef.current = startListening({
       onText: (fin, int) => {
         setText(baseRef.current + fin);

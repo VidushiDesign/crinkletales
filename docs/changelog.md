@@ -32,3 +32,9 @@
 - New home: greeting with a highlighter, today's page card with washi tape, "This week" mood stickers (tap a day to open it, + for today), a memory resurfacing (on this day, or a page from over a week ago, with a line from it)
 - Desktop: 2 columns, straighter cards, two stickers
 - Background music player: in the side rail on desktop, a strip above the nav on phones; hidden until tracks are added
+
+## v0.4 (21 Nov 2026)
+- Background music composed in code (no files, no licences): 3 pieces, slow morning (soft piano), cloud nap (dreamy), window seat (sunny), with pads, piano plucks, bass and faint vinyl crackle
+- The same tracks can be picked as a memory's song
+- Music pauses while you record, so the mic doesn't hear it; it also steps aside while an entry's own song plays
+- The background strip hides on entries, and sheets now sit above it
