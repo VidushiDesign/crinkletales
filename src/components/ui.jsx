@@ -85,6 +85,7 @@ export function Sheet({ open, onClose, title, children, className = '' }) {
   return (
     <div className="sheet-backdrop" onPointerDown={(e) => e.target === e.currentTarget && onClose?.()}>
       <div className={`sheet ${className}`} role="dialog" aria-modal="true" aria-label={title}>
+        <span className="sheet-grab" aria-hidden="true" />
         <div className="sheet-head">
           <h2>{title}</h2>
           <Press variant="icon" aria-label="Close" onClick={onClose}>

@@ -45,3 +45,8 @@
 ## v0.4.2 (21 Nov 2026)
 - Background is now vanilla paper with tiny dots (picked from 15 options; earlier ones felt dull or too textured)
 - Phone music player: the strip peeks in for a few seconds when music starts or changes, then tucks into a small cassette button at the top right; tap it to pause or skip
+
+## v0.4.3 (21 Nov 2026)
+- Removed the decorative star and flower stickers from home
+- Desktop rail pinned to the edge; menu items and music player share the same 16px edges
+- Mobbin cross-check fixes: grab handle on phone sheets, clear "new prompt" label

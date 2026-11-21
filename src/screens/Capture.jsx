@@ -139,7 +139,8 @@ export default function Capture({ params = {}, back, onMake }) {
       </header>
 
       <button type="button" className="prompt-pill" onClick={() => setPrompt(PROMPTS[(PROMPTS.indexOf(prompt) + 1) % PROMPTS.length])}>
-        <Shuffle aria-hidden="true" /> {prompt}
+        <Shuffle aria-hidden="true" /> <span className="prompt-text">{prompt}</span>
+        <span className="prompt-new">new prompt</span>
       </button>
 
       {mode === 'talk' ? (

@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { Mic, PenLine, Shuffle, Plus } from 'lucide-react';
 import { Press } from '../components/ui.jsx';
 import Page, { NoteThumb } from '../components/Page.jsx';
-import Doodle, { MoodFace } from '../components/Doodle.jsx';
+import { MoodFace } from '../components/Doodle.jsx';
 import { PROMPTS, dateLabel, detect, splitSentences, MOOD_LABEL } from '../lib/generate.js';
 import { streakDays } from './Insights.jsx';
 
@@ -65,10 +65,6 @@ export default function Home({ data, go }) {
 
   return (
     <div className="screen home">
-      <span className="home-sticker s-star" aria-hidden="true">
-        <Doodle kind="star" />
-      </span>
-
       <header className="home-head">
         <div className="chip-row">
           <span className="pill">{dateLabel(Date.now())}</span>
@@ -95,7 +91,8 @@ export default function Home({ data, go }) {
             onClick={() => setPi((pi + 1) % PROMPTS.length)}
             aria-label={`Prompt: ${PROMPTS[pi]}. Tap for another.`}
           >
-            <Shuffle aria-hidden="true" /> {PROMPTS[pi]}
+            <Shuffle aria-hidden="true" /> <span className="prompt-text">{PROMPTS[pi]}</span>
+            <span className="prompt-new">new prompt</span>
           </button>
           <div className="cta-row">
             <Press variant="primary" size="lg" sfx="paper" onClick={() => go('capture', { mode: 'talk', prompt: PROMPTS[pi] })}>
@@ -196,9 +193,6 @@ export default function Home({ data, go }) {
         )}
       </section>
 
-      <span className="home-sticker s-flower" aria-hidden="true">
-        <Doodle kind="flower" />
-      </span>
     </div>
   );
 }
