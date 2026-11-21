@@ -41,3 +41,7 @@
 
 ## v0.4.1 (21 Nov 2026)
 - App background looks like paper: fine grain, soft fibres and a faint journal dot grid
+
+## v0.4.2 (21 Nov 2026)
+- Background is now vanilla paper with tiny dots (picked from 15 options; earlier ones felt dull or too textured)
+- Phone music player: the strip peeks in for a few seconds when music starts or changes, then tucks into a small cassette button at the top right; tap it to pause or skip

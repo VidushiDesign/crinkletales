@@ -6,7 +6,8 @@
 
 :root {
   /* ---- App colours (neo-brutal UI) ---- */
-  --oat: #f3eee4;      /* app background */
+  --vanilla: #fff4d9;  /* app background (paper with tiny dots) */
+  --oat: #f3eee4;      /* soft surfaces, inputs */
   --cream: #fffdf7;    /* cards, sheets */
   --ink: #1b1a17;      /* text, borders, shadows */
   --grey: #5a554c;     /* secondary text */

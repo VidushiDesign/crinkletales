@@ -7,10 +7,10 @@
 html, body { margin: 0; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
-  background-color: var(--oat);
-  /* paper: fine grain + soft fibres + a faint journal dot grid */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .24 0 0 0 0 .14 .34 0 0 0 -.09'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .35' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .26 0 0 0 -1.6 .9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)' opacity='.35'/%3E%3C/svg%3E"), radial-gradient(rgba(27, 26, 23, 0.14) 1.1px, transparent 1.5px);
-  background-size: 260px 260px, 520px 520px, 22px 22px;
+  background-color: var(--vanilla);
+  /* vanilla paper: barely-there grain + tiny dots */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .15 .15 0 0 0 -.05'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"), radial-gradient(rgba(150, 105, 20, 0.2) 1px, transparent 1.4px);
+  background-size: 260px 260px, 18px 18px;
   color: var(--ink);
   font: 400 var(--text-md)/1.45 var(--font-ui);
   -webkit-font-smoothing: antialiased;
@@ -192,7 +192,7 @@ svg { flex: none; }
 /* ---- home (v4 B, calmer) ---- */
 .home { position: relative; }
 .home-sticker { position: absolute; width: 38px; pointer-events: none; }
-.home-sticker.s-star { right: 22px; top: 58px; rotate: 12deg; }
+.home-sticker.s-star { right: 22px; top: 74px; rotate: 12deg; }
 .home-sticker.s-flower { display: none; }
 .home-head { display: flex; flex-direction: column; gap: var(--s3); padding-top: var(--s3); }
 .home-head h1 { font-size: 32px; line-height: 1.06; max-width: 85%; }
@@ -256,7 +256,27 @@ button.memory:active { transform: scale(0.98); }
 .np-btn:active { transform: scale(0.92); }
 .np-btn.is-main { background: var(--mustard); }
 .np-btn svg { width: 15px; height: 15px; fill: currentColor; }
-.app.has-player .main { padding-bottom: calc(var(--nav-h) + 90px + env(safe-area-inset-bottom)); }
+.now-playing { animation: npIn var(--dur-med) var(--ease-spring) both; }
+@keyframes npIn { from { translate: 0 16px; opacity: 0; } }
+.np-mini {
+  position: fixed;
+  z-index: 21;
+  top: calc(12px + env(safe-area-inset-top));
+  right: 12px;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  border: var(--border);
+  background: var(--tomato);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  place-items: center;
+  animation: chipIn var(--dur-med) var(--ease-spring) both;
+}
+.np-mini .reel { width: 24px; border: 3px solid var(--cream); }
+.np-mini.is-playing .reel { animation: spin 2.4s linear infinite; }
+.np-mini:active { transform: scale(0.92); }
 .shelf-item:active { transform: rotate(0) scale(0.97); }
 .shelf-cap { display: block; margin-top: var(--s2); font-weight: 600; font-size: var(--text-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .home-recent { display: flex; flex-direction: column; gap: var(--s3); }
@@ -324,7 +344,7 @@ button.memory:active { transform: scale(0.98); }
 .story-input.small { min-height: 110px; }
 .type-meta { text-align: right; font: 400 var(--text-xs)/1 var(--font-mono); margin-top: var(--s2); }
 .spotted { display: flex; flex-direction: column; gap: var(--s2); }
-.capture-foot { margin-top: auto; display: flex; flex-direction: column; gap: var(--s2); position: sticky; bottom: 0; padding: var(--s3) 0 calc(var(--s3) + env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--oat) 30%); }
+.capture-foot { margin-top: auto; display: flex; flex-direction: column; gap: var(--s2); position: sticky; bottom: 0; padding: var(--s3) 0 calc(var(--s3) + env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--vanilla) 30%); }
 .capture-foot .btn { width: 100%; }
 
 /* ---- generating ---- */

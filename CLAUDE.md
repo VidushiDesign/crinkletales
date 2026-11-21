@@ -18,7 +18,7 @@ Talk or type your day; it becomes an editable junk journal page. Free, open sour
 ## Design system
 | Token | Value |
 |---|---|
-| Colours | oat #F3EEE4 bg, ink #1B1A17, cobalt #2E4BFF primary, mustard #F5C431, tomato #FF5B37, sage #C8DDB0, sky #CFE0FF, butter #FBE7A6 |
+| Colours | vanilla #FFF4D9 bg (tiny dots), oat #F3EEE4 soft surfaces, ink #1B1A17, cobalt #2E4BFF primary, mustard #F5C431, tomato #FF5B37, sage #C8DDB0, sky #CFE0FF, butter #FBE7A6 |
 | Type | Unbounded (titles), Instrument Sans (UI), Shantell Sans (handwriting), Space Mono (labels) |
 | Space | 8px base: 4 / 8 / 12 / 16 / 24 / 32 / 48 |
 | Shape | 2px ink border, hard shadows 2/4/6px, pills, radius 10/16/24 |
