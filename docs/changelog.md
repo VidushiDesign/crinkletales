@@ -38,3 +38,6 @@
 - The same tracks can be picked as a memory's song
 - Music pauses while you record, so the mic doesn't hear it; it also steps aside while an entry's own song plays
 - The background strip hides on entries, and sheets now sit above it
+
+## v0.4.1 (21 Nov 2026)
+- App background looks like paper: fine grain, soft fibres and a faint journal dot grid
