@@ -4,8 +4,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowLeft, Undo2, Redo2, Volume2, VolumeX, Check, Sticker, Scissors, PenLine, ImagePlus,
-  StickyNote, Palette, Pencil, BringToFront, Copy, Trash2, Plus,
+  StickyNote, Palette, Pencil, BringToFront, Copy, Trash2, Plus, Music,
 } from 'lucide-react';
+import { SongSheet } from '../components/MusicCassette.jsx';
 import Page, { PAPER_TONES, PAPER_TEXTURES } from '../components/Page.jsx';
 import Doodle, { DOODLE_KINDS } from '../components/Doodle.jsx';
 import { Press, Sheet, Chip } from '../components/ui.jsx';
@@ -392,11 +393,24 @@ export default function Editor({ entry: initial, onSave, onDone, soundOn, setSou
           </Press>
           <Press
             variant="icon"
-            aria-label={soundOn ? 'Mute sounds' : 'Turn sounds on'}
+            className={`labelled ${entry.music ? 'has-song' : ''}`}
+            aria-label={entry.music ? 'Change this memory’s song' : 'Add a song to this memory'}
+            title={entry.music ? 'Change song' : 'Add a song'}
+            onClick={() => setSheet('song')}
+          >
+            <Music aria-hidden="true" />
+            <span className="btn-label">{entry.music ? 'song added' : 'song'}</span>
+          </Press>
+          <Press
+            variant="icon"
+            className="labelled"
+            aria-label={soundOn ? 'Mute crinkle sounds' : 'Turn crinkle sounds on'}
+            title={soundOn ? 'Mute crinkle sounds' : 'Turn crinkle sounds on'}
             aria-pressed={soundOn}
             onClick={() => setSoundOn(!soundOn)}
           >
             {soundOn ? <Volume2 aria-hidden="true" /> : <VolumeX aria-hidden="true" />}
+            <span className="btn-label">sounds</span>
           </Press>
           <Press variant="primary" size="sm" sfx="page" onClick={() => onDone(entryRef.current)}>
             <Check aria-hidden="true" /> Done
@@ -589,6 +603,18 @@ export default function Editor({ entry: initial, onSave, onDone, soundOn, setSou
           ))}
         </div>
       </Sheet>
+
+      <SongSheet
+        open={sheet === 'song'}
+        music={entry.music || null}
+        onClose={() => setSheet(null)}
+        onSave={(music) => {
+          sound.card();
+          commit({ ...entry, music });
+          setSheet(null);
+          track('song_added', { kind: music ? music.kind : 'removed', where: 'editor' });
+        }}
+      />
 
       <Sheet open={!!editing} onClose={() => setEditing(null)} title="Edit words">
         {editing ? (

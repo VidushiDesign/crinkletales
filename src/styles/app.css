@@ -366,6 +366,8 @@ button.memory:active { transform: scale(0.98); }
 .editor { padding: var(--s2) var(--s2) var(--s3); gap: var(--s3); min-height: 100dvh; }
 .editor-top-actions { display: flex; gap: 6px; align-items: center; }
 .editor-top-actions .btn-icon { width: 40px; min-height: 40px; }
+.editor-top-actions .btn-label { display: none; }
+.editor-top-actions .has-song { background: var(--tomato); color: var(--cream); }
 .editor-tabs { display: flex; gap: 4px; }
 .editor-tabs button { min-width: 38px; min-height: 34px; border: var(--border); border-radius: 10px; background: var(--cream); font: 700 var(--text-xs)/1 var(--font-mono); }
 .editor-tabs button.is-active { background: var(--ink); color: var(--cream); }
@@ -708,6 +710,8 @@ button.memory:active { transform: scale(0.98); }
   .editor-stage { grid-column: 2; min-height: 72dvh; }
   .selbar { grid-column: 2; }
   .editor-page { width: min(560px, 64dvh); }
+  .editor-top-actions .labelled { width: auto; padding: 0 12px; gap: 6px; }
+  .editor-top-actions .btn-label { display: inline; font-size: 13px; }
   .sheet { border-radius: var(--radius-lg); border-bottom: var(--border); margin-bottom: var(--s5); max-width: 560px; }
   .sheet-backdrop { align-items: center; }
   .sheet-grab { display: none; }

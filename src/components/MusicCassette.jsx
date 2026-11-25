@@ -114,7 +114,7 @@ export default function MusicCassette({ music, onChange }) {
   );
 }
 
-function SongSheet({ open, music, onClose, onSave }) {
+export function SongSheet({ open, music, onClose, onSave }) {
   const [link, setLink] = useState(music?.url || '');
   const [title, setTitle] = useState(music?.title || '');
   const [err, setErr] = useState('');

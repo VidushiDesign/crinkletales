@@ -50,3 +50,7 @@
 - Removed the decorative star and flower stickers from home
 - Desktop rail pinned to the edge; menu items and music player share the same 16px edges
 - Mobbin cross-check fixes: grab handle on phone sheets, clear "new prompt" label
+
+## v0.4.4 (25 Nov 2026)
+- Song button in the editor top bar: add a song to the memory while you build it (turns red once a song is added)
+- The speaker button is labelled "sounds" so it is clear it only mutes crinkle sounds (labels show on desktop)
